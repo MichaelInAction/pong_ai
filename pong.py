@@ -33,9 +33,11 @@ class Player(object):
         if side == 'left':
             self.x = 30
             self.agent = Agent(self, "weights1.hdf5")
+            self.img = pygame.image.load('assets/player1.png')
         if side == 'right':
             self.x = game.width - 30
             self.agent = Agent(self, "weights2.hdf5")
+            self.img = pygame.image.load('assets/player2.png')
         self.y = game.height / 2
         self.height = 50
         self.game = game
@@ -44,7 +46,8 @@ class Player(object):
         self.bounced = False
 
     def display_player(self, game):
-        pygame.draw.rect(game.gameDisplay, (255, 255, 255), pygame.Rect(self.x-5, self.y-self.height/2, 10, self.height))
+        #pygame.draw.rect(game.gameDisplay, (255, 255, 255), pygame.Rect(self.x-5, self.y-self.height/2, 10, self.height))
+        game.gameDisplay.blit(self.img, (self.x-5, self.y-self.height/2))
 
     def move(self, ball, other_player):
         self.agent.epsilon = 500 - (self.score + other_player.score)
@@ -85,9 +88,11 @@ class Ball(object):
             self.x_vel = -1
         self.y_vel = random.uniform(-1, 1)
         self.game = game
+        self.img = pygame.image.load('assets/PongBall.png')
 
     def display_ball(self, game):
-        pygame.draw.rect(game.gameDisplay, (255, 255, 255), pygame.Rect(self.x-5, self.y-5, 10, 10))
+        #pygame.draw.rect(game.gameDisplay, (255, 255, 255), pygame.Rect(self.x-5, self.y-5, 10, 10))
+        game.gameDisplay.blit(self.img, (self.x-5, self.y-5))
 
     def move(self):
         self.x = self.x + self.x_vel
@@ -118,13 +123,13 @@ class Ball(object):
 def display_ui(game, record):
     myfont = pygame.font.SysFont('Segoe UI', 20)
     myfont_bold = pygame.font.SysFont('Segoe UI', 20, True)
-    text_score_p1 = myfont.render('SCORE: ', True, (255, 255, 255))
-    text_score_number_p1 = myfont.render(str(game.player1.score), True, (255, 255, 255))
-    text_score_p2 = myfont.render('SCORE: ', True, (255, 255, 255))
-    text_score_number_p2 = myfont.render(str(game.player2.score), True, (255, 255, 255))
+    text_score_p1 = myfont.render('SCORE: ', True, (29, 162, 255))
+    text_score_number_p1 = myfont.render(str(game.player1.score), True, (29, 162, 255))
+    text_score_p2 = myfont.render('SCORE: ', True, (255, 0, 0))
+    text_score_number_p2 = myfont.render(str(game.player2.score), True, (255, 0, 0))
     game.gameDisplay.blit(text_score_p1, (45, 440))
     game.gameDisplay.blit(text_score_number_p1, (120, 440))
-    game.gameDisplay.blit(text_score_p1, (300, 440))
+    game.gameDisplay.blit(text_score_p2, (300, 440))
     game.gameDisplay.blit(text_score_number_p2, (375, 440))
 
 def display(game, ball, player1, player2):
